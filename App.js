@@ -41,7 +41,8 @@ export default class App extends React.Component {
             toValue: { x: 0, y: -SCREEN_HEIGHT },
             duration: 400
           }).start(() => {
-            console.log("timing finish");
+            this.setState({ currentIndex: this.state.currentIndex + 1 });
+            this.position.setValue({ x: 0, y: 0 });
           });
         } else {
           Animated.spring(this.position, {
@@ -77,7 +78,7 @@ export default class App extends React.Component {
                 flex: 1,
                 width: null,
                 height: null,
-                resizeMode: "contain"
+                resizeMode: "center"
               }}
             />
           </View>
@@ -102,7 +103,7 @@ export default class App extends React.Component {
               containing Lorem Ipsum passages, and more recently with desktop
               publishing software like Aldus PageMaker including versions of
               Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
+              typesetting industry. {item.id}
             </Text>
           </View>
         </View>
@@ -110,7 +111,71 @@ export default class App extends React.Component {
     }).reverse();
   };
 
+  fuckup = () => {
+    return ARTICLES.map((item, i) => {
+      if (i < this.state.currentIndex) {
+        return null;
+      }
+      return (
+        <Animated.View
+          key={item.id}
+          style={
+            this.state.currentIndex === i ? this.position.getLayout() : null
+          }
+          {...(this.state.currentIndex === i
+            ? { ...this._panResponder.panHandlers }
+            : null)}
+        >
+          <View
+            style={{
+              flex: 1,
+              position: "absolute",
+              width: SCREEN_WIDTH,
+              height: SCREEN_HEIGHT,
+              backgroundColor: "white"
+            }}
+          >
+            <View style={{ flex: 2, backgroundColor: "black" }}>
+              <Image
+                source={item.uri}
+                style={{
+                  flex: 1,
+                  width: null,
+                  height: null,
+                  resizeMode: "contain"
+                }}
+              />
+            </View>
+            <View style={{ flex: 3, padding: 5 }}>
+              <Text>
+                {item.id} Lorem Ipsum is simply dummy text of the printing and
+                typesetting industry. Lorem Ipsum has been the industry's
+                standard dummy text ever since the 1500s, when an unknown
+                printer took a galley of type and scrambled it to make a type
+                specimen book. It has survived not only five centuries, but also
+                the leap into electronic typesetting, remaining essentially
+                unchanged. It was popularised in the 1960s with the release of
+                Letraset sheets containing Lorem Ipsum passages, and more
+                recently with desktop publishing software like Aldus PageMaker
+                including versions of Lorem Ipsum. Lorem Ipsum is simply dummy
+                text of the printing and typesetting industry. Lorem Ipsum has
+                been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it
+                to make a type specimen book. It has survived not only five
+                centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged. It was popularised in the 1960s
+                with the release of Letraset sheets containing Lorem Ipsum
+                passages, and more recently with desktop publishing industry.{" "}
+                {item.id}
+              </Text>
+            </View>
+          </View>
+        </Animated.View>
+      );
+    }).reverse();
+  };
+
   render() {
-    return <View style={{ flex: 1 }}>{this.renderArticles()}</View>;
+    return <View style={{ flex: 1 }}>{this.fuckup()}</View>;
   }
 }
