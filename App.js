@@ -51,6 +51,7 @@ export default class App extends React.Component {
       }
     });
   }
+
   renderArticles = () => {
     return ARTICLES.map((item, i) => {
       <Animated.View
@@ -60,7 +61,6 @@ export default class App extends React.Component {
           ? { ...this._panResponder.panHandlers }
           : null)}
       >
-        {console.log(this.state.currentIndex, i)}
         <View
           style={{
             flex: 1,
@@ -77,7 +77,7 @@ export default class App extends React.Component {
                 flex: 1,
                 width: null,
                 height: null,
-                resizeMode: "center"
+                resizeMode: "contain"
               }}
             />
           </View>
@@ -109,6 +109,7 @@ export default class App extends React.Component {
       </Animated.View>;
     }).reverse();
   };
+
   render() {
     return <View style={{ flex: 1 }}>{this.renderArticles()}</View>;
   }
